@@ -22,62 +22,152 @@ namespace Backend.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Backend.Model.Auction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CarId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Reserve")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("StartingPrice")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Auctions");
+                });
+
+            modelBuilder.Entity("Backend.Model.Bid", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("AuctionId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuctionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Bids");
+                });
+
             modelBuilder.Entity("Backend.Model.Car", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Brand")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("CubicCapacity")
                         .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("DriveTrain")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateOnly>("FirstRegistration")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Fuel")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Gearbox")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ImagesFolderPath")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("KM")
+                    b.Property<int>("Km")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("SpecId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Vin")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SpecId");
+
+                    b.ToTable("Cars");
+                });
+
+            modelBuilder.Entity("Backend.Model.CarImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CarId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.ToTable("CarImages");
+                });
+
+            modelBuilder.Entity("Backend.Model.CarSpec", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Emissions")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("EngineSize")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FuelType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Make")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Model")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Power")
-                        .HasColumnType("integer");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("VIN")
+                    b.Property<string>("Trim")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -86,18 +176,49 @@ namespace Backend.Migrations
 
                     b.HasKey("Id");
 
+                    b.ToTable("CarSpecs");
+                });
+
+            modelBuilder.Entity("Backend.Model.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AuctionId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuctionId");
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("Cars");
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Backend.Model.User", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -116,20 +237,163 @@ namespace Backend.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Backend.Model.Car", b =>
+            modelBuilder.Entity("Backend.Model.UserInteraction", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CarId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("InteractedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserInteractions");
+                });
+
+            modelBuilder.Entity("Backend.Model.Auction", b =>
+                {
+                    b.HasOne("Backend.Model.Car", "Car")
+                        .WithMany("Auctions")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Backend.Model.User", "User")
-                        .WithMany("Cars")
+                        .WithMany("Auctions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Car");
+
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Backend.Model.Bid", b =>
+                {
+                    b.HasOne("Backend.Model.Auction", "Auction")
+                        .WithMany("Bids")
+                        .HasForeignKey("AuctionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Model.User", "User")
+                        .WithMany("Bids")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Auction");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Backend.Model.Car", b =>
+                {
+                    b.HasOne("Backend.Model.CarSpec", "CarSpec")
+                        .WithMany("Cars")
+                        .HasForeignKey("SpecId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CarSpec");
+                });
+
+            modelBuilder.Entity("Backend.Model.CarImage", b =>
+                {
+                    b.HasOne("Backend.Model.Car", "Car")
+                        .WithMany("CarImages")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
+                });
+
+            modelBuilder.Entity("Backend.Model.Comment", b =>
+                {
+                    b.HasOne("Backend.Model.Auction", "Auction")
+                        .WithMany("AuctionComments")
+                        .HasForeignKey("AuctionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Model.User", "User")
+                        .WithMany("AuctionComments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Auction");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Backend.Model.UserInteraction", b =>
+                {
+                    b.HasOne("Backend.Model.Car", "Car")
+                        .WithMany("UserInteractions")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Model.User", "User")
+                        .WithMany("UserInteractions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Backend.Model.Auction", b =>
+                {
+                    b.Navigation("AuctionComments");
+
+                    b.Navigation("Bids");
+                });
+
+            modelBuilder.Entity("Backend.Model.Car", b =>
+                {
+                    b.Navigation("Auctions");
+
+                    b.Navigation("CarImages");
+
+                    b.Navigation("UserInteractions");
+                });
+
+            modelBuilder.Entity("Backend.Model.CarSpec", b =>
+                {
+                    b.Navigation("Cars");
                 });
 
             modelBuilder.Entity("Backend.Model.User", b =>
                 {
-                    b.Navigation("Cars");
+                    b.Navigation("AuctionComments");
+
+                    b.Navigation("Auctions");
+
+                    b.Navigation("Bids");
+
+                    b.Navigation("UserInteractions");
                 });
 #pragma warning restore 612, 618
         }

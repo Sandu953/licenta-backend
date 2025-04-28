@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-
 namespace Backend.Controller
 {
     public class UserRequestRegister

@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Backend.Persistence;
 using Backend.Model;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore.Query;
+using Backend.Persistence.Interfaces;
 
 namespace Backend.Service
 {
     public class UserService
     {
-        private IUserPersistence _userPersistence;
+        private readonly IUserPersistence _userPersistence;
 
         public UserService(IUserPersistence userPersistence)
         {
@@ -41,6 +42,7 @@ namespace Backend.Service
             user.Email = email;
             user.Password = ComputeSha256Hash(password);
             user.Username = userName; 
+            user.CreatedAt = DateTime.UtcNow;
             return _userPersistence.Save(user);
         }
 

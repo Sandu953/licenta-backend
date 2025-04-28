@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,23 +11,20 @@ namespace Backend.Model
 {
     public class Car
     {
-        public long Id { get; set; }
-        public string Brand { get; set; }
-        public string Model { get; set; }
-        public string VIN { get; set; }
-        public int Year { get; set; }
-        public int KM { get; set; }
-        public int CubicCapacity { get; set; }
-        public int Power { get; set; }
-        public string Fuel { get; set; }
-        public string Gearbox { get; set; }
-        public string DriveTrain { get; set; }
-        public string Color { get; set; }
-        public DateOnly FirstRegistration { get; set; }
-        public string Description { get; set; }
-        public string ImagesFolderPath { get; set; }
+        [Key]
+        public int Id { get; set; }
 
-        public long UserId { get; set; }
-        public virtual User User { get; set; }
+        [ForeignKey("CarSpec")]
+        public int SpecId { get; set; }
+        public CarSpec CarSpec { get; set; }
+
+        public string Vin { get; set; }
+        public int Km { get; set; }
+        public string Location { get; set; }
+        public string Description { get; set; }
+
+        public ICollection<Auction> Auctions { get; set; }
+        public ICollection<CarImage> CarImages { get; set; }
+        public ICollection<UserInteraction> UserInteractions { get; set; }
     }
 }

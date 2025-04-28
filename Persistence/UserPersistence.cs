@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Text;
+using Backend.Persistence.Interfaces;
 
 namespace Backend.Persistence
 {
     public class UserPersistence : IUserPersistence
     {
-        private ApplicationDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
 
         public UserPersistence(ApplicationDbContext dbContext)
         {
@@ -25,8 +26,7 @@ namespace Backend.Persistence
         /// <returns></returns>
         public User? FindUserByEmail(string email)
         {
-            var user = _dbContext.Users.FirstOrDefault(u => u.Email == email);
-            return user;
+            return _dbContext.Users.FirstOrDefault(u => u.Email == email);
         }
 
         /// <summary>

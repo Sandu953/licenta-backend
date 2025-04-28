@@ -19,6 +19,7 @@ namespace Backend {
                 .Build();
 
             Console.WriteLine("Starting API on http://localhost:5000...");
+
             await host.RunAsync();
         }
     }

@@ -60,8 +60,8 @@ namespace Backend.Data
             // Seed users
             if (!_context.Users.Any())
             {
-                _userService.Save("user1@test.com", "User1", "user");
-                _userService.Save("user2@test.com", "User2", "user");
+                _userService.Save("user1@test.com", "pass", "User1");
+                _userService.Save("user2@test.com", "pass", "User2");
             }
 
             _context.SaveChanges();

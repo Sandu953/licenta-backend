@@ -5,6 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
 
 
 namespace Backend.Controller
@@ -41,11 +46,34 @@ namespace Backend.Controller
             Console.WriteLine(loginData.email);
             if (_userService.Login(loginData.email, loginData.password))
             {
-                return Ok(new { message = "Login permitted!" });
+                var user = _userService.FindUserByEmail(loginData.email);
+
+                var claims = new[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim("userId", user.Id.ToString())
+                };
+
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("gT7kP9lZ6bU1wR3xM2cQvNp8YsA7eFdT"));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                var token = new JwtSecurityToken(
+                    issuer: "car_app",
+                    audience: "car_app",
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddDays(7),
+                    signingCredentials: creds
+                );
+
+                return Ok(new { 
+                    message = "Login permitted!", 
+                    userId = user.Id, 
+                    accessToken = new JwtSecurityTokenHandler().WriteToken(token) });
             }
             else
             {
-                return ValidationProblem(new ValidationProblemDetails().Detail = "email or password are wrong");
+                return BadRequest(new { message = "Email or password are wrong" });
             }
         }
 
@@ -57,9 +85,9 @@ namespace Backend.Controller
                 _userService.Save(request.email, request.password, request.username);
                 return Ok(new { message = "User registered!" });
             }
-            catch
+            catch(Exception e)
             {
-                return ValidationProblem(new ValidationProblemDetails().Detail = "email/username already in use");
+                return BadRequest(new { message = e.Message, inner = e.InnerException?.Message });
             }
         }
     }

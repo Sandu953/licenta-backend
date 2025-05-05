@@ -10,6 +10,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Model
 {
+    [Index(nameof(Username), IsUnique = true)]
+    [Index(nameof(Email), IsUnique = true)]
     public class User
     {                
         [Key]        

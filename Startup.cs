@@ -13,6 +13,8 @@ using Backend.Service;
 using Backend.Data;
 using Backend.Persistence.Interfaces;
 using Backend.ServiceHttp;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Backend
 {
@@ -53,6 +55,29 @@ namespace Backend
                                .AllowAnyHeader();  // Allow any headers
                     });
             });
+
+            var key = Encoding.UTF8.GetBytes("gT7kP9lZ6bU1wR3xM2cQvNp8YsA7eFdT"); // Ideally from configuration
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = "car_app",
+                    ValidAudience = "car_app",
+                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                };
+            });
+
+            services.AddAuthorization();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -64,7 +89,7 @@ namespace Backend
                 //seeder.SeedCarSpecs();
                 //seeder.SeedCars();
                 //seeder.SeedAuctions();
-                seeder.SeedUserInteractions();
+                //seeder.SeedUserInteractions();
 
                 // TEST your RecommendationClient here
                 //var recommendationClient = scope.ServiceProvider.GetRequiredService<RecommendationService>();
@@ -84,6 +109,8 @@ namespace Backend
             app.UseRouting();
 
             app.UseCors("AllowAll"); // Apply the CORS policy
+
+            app.UseAuthentication(); 
 
             app.UseAuthorization();
 

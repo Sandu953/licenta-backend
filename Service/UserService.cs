@@ -28,7 +28,14 @@ namespace Backend.Service
         /// <returns></returns>
         public bool Login(string email, string password)
         {
-            return _userPersistence.Login(email, ComputeSha256Hash(password));
+            try
+            {
+                return _userPersistence.Login(email, ComputeSha256Hash(password));
+            }
+            catch
+            {            
+                return false;
+            }
         }
 
         /// <summary>
@@ -38,6 +45,17 @@ namespace Backend.Service
         /// <returns></returns>
         public User? Save(string email, string password, string userName)
         {
+            if (_userPersistence.validEmail(email) )
+            {
+                Console.WriteLine(email);
+                Console.WriteLine(_userPersistence.validEmail(email));
+                
+                throw new Exception("Email is not valid");
+            }
+            if (_userPersistence.validUserName(userName))
+            {
+                throw new Exception("Username is not valid");
+            }
             var user = new User();
             user.Email = email;
             user.Password = ComputeSha256Hash(password);

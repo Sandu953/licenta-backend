@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Backend.Model;
 
 
 
@@ -82,12 +83,36 @@ namespace Backend.Controller
         {
             try
             {
-                _userService.Save(request.email, request.password, request.username);
-                return Ok(new { message = "User registered!" });
+                var user = _userService.Save(request.email, request.password, request.username);
+
+                var claims = new[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim("userId", user.Id.ToString())
+                };
+
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("gT7kP9lZ6bU1wR3xM2cQvNp8YsA7eFdT"));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                var token = new JwtSecurityToken(
+                    issuer: "car_app",
+                    audience: "car_app",
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddDays(7),
+                    signingCredentials: creds
+                );
+
+                return Ok(new
+                {
+                    message = "Register permitted!",
+                    userId = user.Id,
+                    accessToken = new JwtSecurityTokenHandler().WriteToken(token)
+                });
             }
             catch(Exception e)
             {
-                return BadRequest(new { message = e.Message, inner = e.InnerException?.Message });
+                return BadRequest(new { message = e.Message });
             }
         }
     }

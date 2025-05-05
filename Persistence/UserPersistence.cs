@@ -54,6 +54,26 @@ namespace Backend.Persistence
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
             return user;
-        } 
+        }
+
+        /// <summary>
+        /// Function that checks if a user with the given email already exists.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public bool validEmail(string email)
+        {
+            return _dbContext.Users.Any(u => u.Email == email);
+        }
+
+        /// <summary>
+        /// Function that checks if a user with the given username already exists.
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public bool validUserName(string userName)
+        {
+            return _dbContext.Users.Any(u => u.Username == userName);
+        }
     }
 }

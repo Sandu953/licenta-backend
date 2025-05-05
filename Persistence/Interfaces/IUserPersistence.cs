@@ -12,5 +12,7 @@ namespace Backend.Persistence.Interfaces
         public User? Save(User user);
         public User? FindUserByEmail(string email);
         public bool Login(string email, string password);
+        public bool validUserName(string userName);
+        public bool validEmail(string email);
     }
 }

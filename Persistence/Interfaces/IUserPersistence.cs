@@ -14,5 +14,6 @@ namespace Backend.Persistence.Interfaces
         public bool Login(string email, string password);
         public bool validUserName(string userName);
         public bool validEmail(string email);
+        public void updateProfilePicture(int id, string profilePicture);
     }
 }

@@ -54,5 +54,10 @@ namespace Backend.Service
         {
             return _auctionPersistence.FindActiveAuctions();
         }
+
+        public Auction? FindLiveAuctionByCarVin(string vin)
+        {
+            return _auctionPersistence.FindLiveAuctionByVIN(vin);
+        }
     }
 }

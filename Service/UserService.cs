@@ -47,9 +47,6 @@ namespace Backend.Service
         {
             if (_userPersistence.validEmail(email) )
             {
-                Console.WriteLine(email);
-                Console.WriteLine(_userPersistence.validEmail(email));
-                
                 throw new Exception("Email is not valid");
             }
             if (_userPersistence.validUserName(userName))
@@ -61,6 +58,7 @@ namespace Backend.Service
             user.Password = ComputeSha256Hash(password);
             user.Username = userName; 
             user.CreatedAt = DateTime.UtcNow;
+            user.ProfilePicture = "/profile-pictures/placeholder.png"; // Default profile picture URL
             return _userPersistence.Save(user);
         }
 
@@ -72,6 +70,11 @@ namespace Backend.Service
         public User? FindUserByEmail(string email)
         {
             return _userPersistence.FindUserByEmail(email);
+        }
+
+        public void updateProfilePicture(int id, string profilePicture)
+        {
+            _userPersistence.updateProfilePicture(id, profilePicture);
         }
 
         /// <summary>

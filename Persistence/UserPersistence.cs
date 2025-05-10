@@ -75,5 +75,21 @@ namespace Backend.Persistence
         {
             return _dbContext.Users.Any(u => u.Username == userName);
         }
+
+        /// <summary>
+        /// Function that updates the profile picture of a user.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="profilePicture"></param>
+        public void updateProfilePicture(int id, string profilePicture)
+        {
+            var user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+            user.ProfilePicture = profilePicture;
+            _dbContext.SaveChanges();
+        }
     }
 }

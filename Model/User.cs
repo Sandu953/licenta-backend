@@ -20,6 +20,7 @@ namespace Backend.Model
         public string Email { get; set; }
         public string Password { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string ProfilePicture { get; set; } // URL to the profile picture
 
         public ICollection<Bid> Bids { get; set; }
         public ICollection<Comment> AuctionComments { get; set; }

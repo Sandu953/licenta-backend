@@ -55,6 +55,31 @@ namespace Backend.Data
         }
 
 
+        public void TestCarSpecs()
+        {
+            //test getBrands, getModelsByBrand, getYaarssByBrandModel, getTrimsByBrandModelYear
+            var brands = _carSpecService.GetAllBrands();
+            var models = _carSpecService.GetAllModelsByBrand("Bmw");
+            var years = _carSpecService.GetAllYearsByBrandModel("Bmw", "3 series");
+            //var engines = _carSpecService.GetAllEngineSizesByBrandModelYear("Bmw", "3 series", 2010);
+            //var fuel = _carSpecService.GetAllFuelTypeByBrandModelYearEngineSize("Bmw", "3 series", 2010, 1995);
+            //var trims = _carSpecService.GetAllTrimsByBrandModelYearEngineSizeFuelType("Bmw", "3 series", 2010, 1995, "Diesel");
+
+
+            //Console.WriteLine("Brands: " + string.Join(", ", brands));
+            //Console.WriteLine("Models: " + string.Join(", ", models));
+            //Console.WriteLine("Years: " + string.Join(", ", years));
+            ////Console.WriteLine("Engines: " + string.Join(", ", engines));
+            //Console.WriteLine("Fuel: " + string.Join(", ", fuel));
+            //foreach(CarSpec carSpec in trims)
+            //{
+            //    Console.WriteLine("CarSpec: " + carSpec.Trim);
+            //}
+
+
+        }
+
+
         public void Seed()
         {
             // Seed users

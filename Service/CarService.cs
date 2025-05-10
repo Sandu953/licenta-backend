@@ -8,7 +8,7 @@ using Backend.Persistence.Interfaces;
 
 namespace Backend.Service
 {
-    internal class CarService
+    public class CarService
     {
         private readonly ICarPersistence _carPersistence;
 

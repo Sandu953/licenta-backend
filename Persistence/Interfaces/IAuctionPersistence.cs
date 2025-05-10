@@ -15,5 +15,6 @@ namespace Backend.Persistence.Interfaces
         public List<Auction> FindByCarId(long carId);
         public List<Auction> FindByUserId(long userId);
         public List<Auction> FindActiveAuctions();
+        public Auction? FindLiveAuctionByVIN(string vin);
     }
 }

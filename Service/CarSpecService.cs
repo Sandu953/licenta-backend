@@ -93,5 +93,74 @@ namespace Backend.Service
         {
             return _carSpecPersistence.GetSpecsByBrandModel(brand, model);
         }
+
+        /// <summary>
+        /// Function that finds all car brands in the database.
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetAllBrands()
+        {
+            return _carSpecPersistence.GetAllBrands();
+        }
+
+        /// <summary>
+        /// Function that finds all car models by brand.
+        /// </summary>
+        /// <param name="brand"></param>
+        /// <returns></returns>
+        public List<string> GetAllModelsByBrand(string brand)
+        {
+            return _carSpecPersistence.GetAllModelsByBrand(brand);
+        }
+
+        /// <summary>
+        /// Function that finds all car trims by brand and model.
+        /// </summary>
+        /// <param name="brand"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public List<int> GetAllYearsByBrandModel(string brand, string model)
+        {
+            return _carSpecPersistence.GetAllYearsByBrandModel(brand, model);
+        }
+
+        /// <summary>
+        /// Function that finds all car trims by brand, model and year.
+        /// </summary>
+        /// <param name="brand"></param>
+        /// <param name="model"></param>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        public List<int> GetAllEngineSizesByBrandModel(string brand, string model)
+        {
+            return _carSpecPersistence.GetAllEngineSizesByBrandModel(brand, model);
+        }
+
+        /// <summary>
+        /// Function that finds all car trims by brand, model, year and engine size.
+        /// </summary>
+        /// <param name="brand"></param>
+        /// <param name="model"></param>
+        /// <param name="year"></param>
+        /// <param name="engineSize"></param>
+        /// <returns></returns>
+        public List<string> GetAllFuelTypeByBrandModelEngineSize(string brand, string model, int engineSize)
+        {
+            return _carSpecPersistence.GetAllFuelTypeByBrandModelEngineSize(brand, model, engineSize);
+        }
+
+        /// <summary>
+        /// Function that finds all car trims by brand, model, year, engine size and horse power.
+        /// </summary>
+        /// <param name="brand"></param>
+        /// <param name="model"></param>
+        /// <param name="year"></param>
+        /// <param name="engineSize"></param>
+        /// <param name="hp"></param>
+        /// <returns></returns>
+        public List<CarSpec> GetAllTrimsByBrandModelEngineSizeFuelType(string brand, string model, int engineSize, string fuel)
+        {
+            return _carSpecPersistence.GetAllTrimsByBrandModelEngineSizeFuelType(brand, model, engineSize, fuel);
+        }
     }
 }

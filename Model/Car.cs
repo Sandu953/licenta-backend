@@ -19,8 +19,11 @@ namespace Backend.Model
         public CarSpec CarSpec { get; set; }
 
         public string Vin { get; set; }
+        public int HP { get; set; }
+        public int year { get; set; }
         public int Km { get; set; }
         public string Location { get; set; }
+        public string BodyType { get; set; }
         public string Description { get; set; }
 
         public ICollection<Auction> Auctions { get; set; }

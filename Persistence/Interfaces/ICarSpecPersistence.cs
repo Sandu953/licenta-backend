@@ -15,5 +15,12 @@ namespace Backend.Persistence.Interfaces
         public CarSpec? FindByTrim(string trim);
         public List<CarSpec> GetSpecsByBrand(string brand);
         public List<CarSpec> GetSpecsByBrandModel(string brand, string model);
+        public List<string> GetAllBrands();
+        public List<string> GetAllModelsByBrand(string brand);
+        public List<int> GetAllYearsByBrandModel(string brand, string model);
+        public List<int> GetAllEngineSizesByBrandModel(string brand, string model);
+        public List<string> GetAllFuelTypeByBrandModelEngineSize(string brand, string model, int engineSize);
+        public List<CarSpec> GetAllTrimsByBrandModelEngineSizeFuelType(string brand, string model, int engineSize, string fuel);
+        //public List<string> GetAllTrimsByBrandModelYear(string brand, string model, int year);
     }
 }

@@ -26,12 +26,16 @@ namespace Backend
 
             services.AddScoped<IUserPersistence, UserPersistence>();
             services.AddScoped<UserService>();
+
             services.AddScoped<ICarSpecPersistence, CarSpecPersistence>();
             services.AddScoped<CarSpecService>();
+
             services.AddScoped<ICarPersistence, CarPersistence>();
             services.AddScoped<CarService>();
+
             services.AddScoped<IAuctionPersistence, AuctionPersistence>();
             services.AddScoped<AuctionService>();
+
             services.AddScoped<IUserInteractionPersistence, UserInteractionPersistence>();
             services.AddScoped<UserInteractionService>();
 
@@ -85,6 +89,7 @@ namespace Backend
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+                // seeder.TestCarSpecs();
                 // seeder.Seed();
                 //seeder.SeedCarSpecs();
                 //seeder.SeedCars();
@@ -113,6 +118,8 @@ namespace Backend
             app.UseAuthentication(); 
 
             app.UseAuthorization();
+
+            app.UseStaticFiles(); // să poți accesa imaginile din wwwroot
 
             app.UseEndpoints(endpoints =>
             {

@@ -10,7 +10,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Backend.Model;
-
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace Backend.Controller
@@ -67,9 +70,11 @@ namespace Backend.Controller
                     signingCredentials: creds
                 );
 
-                return Ok(new { 
-                    message = "Login permitted!", 
-                    userId = user.Id, 
+                return Ok(new {
+                    message = "Login permitted!",
+                    userId = user.Id,
+                    username = user.Username,
+                    profilePicturePath = user.ProfilePicture,
                     accessToken = new JwtSecurityTokenHandler().WriteToken(token) });
             }
             else
@@ -107,13 +112,67 @@ namespace Backend.Controller
                 {
                     message = "Register permitted!",
                     userId = user.Id,
+                    username = user.Username,
+                    profilePicturePath = user.ProfilePicture,
                     accessToken = new JwtSecurityTokenHandler().WriteToken(token)
                 });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest(new { message = e.Message });
             }
         }
     }
+
+    [Authorize]
+    [Route("api/updateProfilePicture")]
+    [ApiController]
+    public class UserProfilePictureController : ControllerBase
+    {
+        private readonly IWebHostEnvironment _env;
+        private readonly UserService _userService;
+
+        public UserProfilePictureController(IWebHostEnvironment env, UserService userService)
+        {
+            _env = env;
+            _userService = userService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadProfilePicture([FromForm] IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest(new { message = "No file uploaded." });
+
+            var userIdClaim = User.FindFirst("userId")?.Value;
+            if (userIdClaim == null) return Unauthorized();
+
+            int userId = int.Parse(userIdClaim);
+
+            var extension = Path.GetExtension(file.FileName);
+            var fileName = $"user_{userId}{extension}";
+            var folderPath = Path.Combine(_env.WebRootPath ?? "wwwroot", "profile-pictures");
+            var filePath = Path.Combine(folderPath, fileName);
+            var relativePath = $"/profile-pictures/{fileName}";
+
+            // Asigură-te că folderul există
+            Directory.CreateDirectory(folderPath);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            try
+            {
+                _userService.updateProfilePicture(userId, relativePath); // metoda din UserService
+                return Ok(new { message = "Profile picture uploaded.", path = relativePath });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+    }
+
 }

@@ -83,5 +83,94 @@ namespace Backend.Persistence
                 .Where(c => c.Make == brand && c.Model == model)
                 .ToList();
         }
+
+        /// <summary>
+        /// Finds all car brands in the database.
+        /// </summary>
+        /// <returns></returns>
+        List<string> ICarSpecPersistence.GetAllBrands()
+        {
+            return _dbContext.CarSpecs
+                .Select(c => c.Make)
+                .Distinct()
+                .ToList();
+        }
+
+        /// <summary>
+        /// Finds all car models by brand.
+        /// </summary>
+        /// <param name="brand"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public List<string> GetAllModelsByBrand(string brand)
+        {
+            return _dbContext.CarSpecs
+                .Where(c => c.Make == brand)
+                .Select(c => c.Model)
+                .Distinct()
+                .ToList();
+        }
+
+        /// <summary>
+        /// Finds all car trims by brand and model.
+        /// </summary>
+        /// <param name="brand"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public List<int> GetAllYearsByBrandModel(string brand, string model)
+        {
+            return _dbContext.CarSpecs
+                .Where(c => c.Make == brand && c.Model == model)
+                .Select(c => c.Year)
+                .Distinct()
+                .ToList();
+        }
+
+        /// <summary>
+        /// Finds all car engine sizes by brand, model, and year.
+        /// </summary>
+        /// <param name="brand"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public List<int> GetAllEngineSizesByBrandModel(string brand, string model)
+        {
+            return _dbContext.CarSpecs
+                .Where(c => c.Make == brand && c.Model == model)
+                .Select(c => c.EngineSize)
+                .Distinct()
+                .ToList();
+        }
+
+        /// <summary>
+        /// Finds all car HP by brand, model, year, and engine size.
+        /// </summary>
+        /// <param name="brand"></param>
+        /// <param name="model"></param>
+        /// <param name="engineSize"></param>
+        /// <returns></returns>
+        public List<string> GetAllFuelTypeByBrandModelEngineSize(string brand, string model, int engineSize)
+        {
+            return _dbContext.CarSpecs
+                .Where(c => c.Make == brand && c.Model == model && c.EngineSize == engineSize)
+                .Select(c => c.FuelType)
+                .Distinct()
+                .ToList();
+        }
+
+        /// <summary>
+        /// Finds all car trims by brand, model, year, engine size, and HP.
+        /// </summary>
+        /// <param name="brand"></param>
+        /// <param name="model"></param>
+        /// <param name="engineSize"></param>
+        /// <param name="hp"></param>
+        /// <returns></returns>
+        public List<CarSpec> GetAllTrimsByBrandModelEngineSizeFuelType(string brand, string model, int engineSize, string fuel)
+        {
+            return _dbContext.CarSpecs
+                .Where(c => c.Make == brand && c.Model == model && c.EngineSize == engineSize && c.FuelType == fuel)
+                .ToList();
+        }
     }
 }

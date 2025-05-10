@@ -48,5 +48,21 @@ namespace Backend.Persistence
         {
             return _dbContext.Auctions.Where(a => a.StartTime >= DateTime.Now && a.StartTime <= DateTime.Now.AddDays(7)).ToList();
         }
+
+        public Auction? FindLiveAuctionByVIN(string vin)
+        {
+            var now = DateTime.UtcNow;
+            return _dbContext.Auctions
+                .Where(a => a.StartTime >= now && a.StartTime <= now.AddDays(7)) // Filter live auctions
+                .Join(
+                    _dbContext.Cars, // Join with Cars table
+                    auction => auction.CarId, // Match Auction.CarId with Car.Id
+                    car => car.Id,
+                    (auction, car) => new { Auction = auction, Car = car }
+                )
+                .Where(ac => ac.Car.Vin == vin) // Filter by VIN
+                .Select(ac => ac.Auction) // Select the Auction
+                .FirstOrDefault(); // Return the first matching auction or null
+        }
     }
 }

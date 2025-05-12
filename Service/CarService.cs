@@ -17,13 +17,15 @@ namespace Backend.Service
             _carPersistence = carPersistence;
         }
 
-        public Car? Save(int specId, string vin, int km, string location, string description)
+        public Car? Save(int specId, string vin, int km, int year, string bodyType, string location, string description)
         {
             Car car = new Car
             {
                 SpecId = specId,
                 Vin = vin,
                 Km = km,
+                year = year,
+                BodyType = bodyType,
                 Location = location,
                 Description = description
             };

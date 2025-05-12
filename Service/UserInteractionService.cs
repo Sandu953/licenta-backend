@@ -24,7 +24,7 @@ namespace Backend.Service
                 UserId = userId,
                 CarId = carId,
                 Score = interactionScore,
-                InteractedAt = DateTime.Now
+                InteractedAt = DateTime.UtcNow
             };
             return _userInteractionPersistence.Save(userInteraction);
         }

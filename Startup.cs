@@ -39,6 +39,10 @@ namespace Backend
             services.AddScoped<IUserInteractionPersistence, UserInteractionPersistence>();
             services.AddScoped<UserInteractionService>();
 
+            services.AddScoped<ICarImagePersistence, CarImagePersitence>();
+            services.AddScoped<CarImageService>();
+
+
             services.AddHttpClient<RecommendationService>(client =>
             {
                 client.BaseAddress = new Uri("http://localhost:8000/");

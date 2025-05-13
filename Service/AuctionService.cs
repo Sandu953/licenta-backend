@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Backend.Persistence.Interfaces;
 using Backend.Model;
+using Backend.Controller;
 
 namespace Backend.Service
 {
@@ -17,12 +18,13 @@ namespace Backend.Service
             _auctionPersistence = auctionPersistence;
         }
 
-        public Auction? Save(int carId, int userID, DateTime startDate, int startingPrice, int reserve)
+        public Auction? Save(int carId, int userID, string title, DateTime startDate, int startingPrice, int reserve)
         {
             Auction auction = new Auction
             {
                 CarId = carId,
                 UserId = userID,
+                Title = title,
                 StartTime = startDate,
                 StartingPrice = startingPrice,
                 Reserve = reserve
@@ -58,6 +60,11 @@ namespace Backend.Service
         public Auction? FindLiveAuctionByCarVin(string vin)
         {
             return _auctionPersistence.FindLiveAuctionByVIN(vin);
+        }
+
+        public List<AuctionPreviewSendDto> Filter(AuctionFilterDto auctionFilter)
+        {
+            return _auctionPersistence.Filter(auctionFilter);
         }
     }
 }

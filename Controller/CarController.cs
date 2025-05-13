@@ -153,7 +153,7 @@ namespace Backend.Controller
 
                 var car = _carService.Save(int.Parse(dto.TrimId), dto.Vin, int.Parse(dto.Mileage),int.Parse(dto.Year),dto.BodyType, dto.Location, dto.Description);
 
-                var auction = _auctionService.Save(car.Id, userId, DateTime.UtcNow, int.Parse(dto.Price), int.Parse(dto.ReservePrice));
+                var auction = _auctionService.Save(car.Id, userId, dto.Title, DateTime.UtcNow, int.Parse(dto.Price), int.Parse(dto.ReservePrice));
 
                 var carFolder = Path.Combine("wwwroot/uploads", car.Id.ToString());
                 Directory.CreateDirectory(carFolder);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Backend.Controller;
 using Backend.Model;
 
 namespace Backend.Persistence.Interfaces
@@ -16,5 +17,6 @@ namespace Backend.Persistence.Interfaces
         public List<Auction> FindByUserId(long userId);
         public List<Auction> FindActiveAuctions();
         public Auction? FindLiveAuctionByVIN(string vin);
+        public List<AuctionPreviewSendDto> Filter(AuctionFilterDto auctionFilter);
     }
 }

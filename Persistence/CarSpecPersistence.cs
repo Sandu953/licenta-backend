@@ -168,8 +168,15 @@ namespace Backend.Persistence
         /// <returns></returns>
         public List<CarSpec> GetAllTrimsByBrandModelEngineSizeFuelType(string brand, string model, int engineSize, string fuel)
         {
+
+            //return _dbContext.CarSpecs
+            //    .Where(c => c.Make == brand && c.Model == model && c.EngineSize == engineSize && c.FuelType == fuel)
+            //    .DistinctBy(c => c.Trim)
+            //    .ToList();
             return _dbContext.CarSpecs
                 .Where(c => c.Make == brand && c.Model == model && c.EngineSize == engineSize && c.FuelType == fuel)
+                .GroupBy(c => c.Trim)
+                .Select(g => g.First())
                 .ToList();
         }
     }

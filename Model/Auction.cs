@@ -21,6 +21,8 @@ namespace Backend.Model
         public int UserId { get; set; } // Seller
         public User User { get; set; }
 
+        public string Title { get; set; }
+
         public DateTime StartTime { get; set; }
 
         public int StartingPrice { get; set; }
